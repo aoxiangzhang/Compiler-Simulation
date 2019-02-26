@@ -1,0 +1,72 @@
+演示数据
+第一组（课本例子，经典例子开局）
+T_DOUBLE=double
+第二组
+T=a*b
+第三组
+T_1=a*b
+T_2=(a|b)*
+第四组
+T=[a-z]
+第五组
+T=(a*b){2,3}（绕过可视化部分情况在NFA会有重叠边）
+第六组（课本例子，经典例子结局）
+T=(a|b)*abb
+开始模拟分词（接受abb结尾的串），分词跑一个NFA和两个DFA，由于下面输入的串很短，可以第一个手动一步步讲解，后面再演示一下自动和停止
+由于这个图是实现布局时候一直参考的，所以算是比较漂亮的，加上aoxiang做了DFA聚焦，也可以秀一下
+源码1： ababb（整个接受）
+源码2： abba（接受abb，拒绝a）（这里应该是拒绝，现在给出的是“不认识字符”，有点迷）
+源码3： abbcabb（遇到不认识字符c，把前面的abb切出来，后面的全部拒绝）
+
+错误例子（可选）
+T=[]（NFA is null）
+T=[-]
+...
+
+
+
+
+炫耀数据（这个再改改找一个账号收藏一下）
+T_INT=int
+T_FOR=for
+T_CLASS=class
+T_EQUAL==
+T_SEMIC=;
+T_SPACE= 
+T_LPARE=\(
+T_RPARE=\)
+T_LSQUARE=\{
+T_RSQUARE=\}
+T_PLUS=\+
+T_LESS=<
+T_IDENTITY=[abi]+
+T_DOUBLE=-?([1-9]\d*.\d*|0.\d*[1-9]\d*|0?.0+|0)
+T_INTEGER=-?(([1-9]\d*)|0)
+测试源码（手打，或者收藏。。。）
+for(int i=0;i<10;i++){
+class b();
+b+=0.5;
+}
+
+T_INT=int
+T_DOUBLE=double
+T_FOR=for
+T_CLASS=class
+T_EQUAL==
+T_SEMIC=;
+T_SPACE= 
+T_PARE=\(|\)
+T_SQUARE=\{|\}
+T_PLUS=\+
+T_LESS=<
+T_IDENTITY=[abicountsm]+
+T_REAL=-?([1-9]\d*.\d*|0.\d*[1-9]\d*|0?.0+|0)
+T_INTEGER=-?(([1-9]\d*)|0)
+int count=0;double sum=0;for(int i=0;i<10;i++){sum+=0.5;count++;}
+
+int count=0;
+double sum=0;
+for(int i=0;i<10;i++){
+sum+=0.5;
+count++;
+}

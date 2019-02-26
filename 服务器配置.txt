@@ -1,0 +1,90 @@
+ssh-keygen -t rsa -C "g2369969039@gmail.com"
+cat ./.ssh/id_rsa.pub
+
+
+
+curl -sL https://deb.nodesource.com/setup_8.x -o nodesource_setup.sh
+ls
+mv nodesource_setup.sh ../
+cd ..
+ls
+sudo bash ./nodesource_setup.sh
+# sudo apt remove --purge nodejs
+# sudo apt remove --purge npm
+sudo apt install nodejs
+nodejs --version
+sudo npm i npm@latest -g
+
+
+git clone repo_address
+cd XXX
+sudo npm install
+sudo npm run build
+sudo mv dist service/
+cd service
+nano app.js
+添加一行
+app.use(express.static(path.join(__dirname, 'dist')))
+
+
+
+sudo ufw app list
+sudo ufw allow OpenSSH
+sudo ufw allow 3000
+sudo ufw enable
+sudo ufw reload
+
+
+sudo apt update
+sudo apt install mysql-server
+# 提示设置mysql-server root的密码
+sudo mysql_secure_installation
+sudo ls /var/lib/mysql
+mysql --version
+systemctl status mysql.service
+sudo mysqladmin -p -u root version
+sudo mysql -u root -p
+
+
+用PM2管理、守护（把进程作为service运行在后台）node应用
+sudo npm install -g pm2
+start应用（自动后台了），同时这个指令顺便把app.js添加到了PM2的进程list（同时赋与一个App name和一个PM2 ID，以及维护者其他一些信息）
+pm2 start app.js
+此时，被PM2管理、守护的应用在crash或被kill时会自动restart
+接下来，让应用在启动系统时（boot或reboot）运行
+pm2的startup子指令会为我们生成和配置一个script，让PM2和被他管理的进程在服务器boot是启动
+pm2 startup systemd
+这时，它会输出一个指令，复制并执行。该指令会创建一个systemd unit，这个unit在user boot时候运行PM2，PM2会运行app.js。可以通过下面指令查看systemd unit 的status
+systemctl status pm2-ziwei
+其他PM2操作：https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-16-04
+
+
+
+此时我们的应用已经在运行，监听localhost。接下来设置Nginx web server作为反向代理
+sudo apt-get update
+sudo apt-get install nginx
+
+sudo ufw app list
+sudo ufw allow "Nginx HTTP"
+sudo ufw status
+sudo ufw reload
+
+浏览器访问 69.12.89.30 看到 Welcome to nginx!
+
+
+
+sudo nano /etc/nginx/sites-available/default
+. . .
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+
+
+sudo nginx -t
+sudo systemctl restart nginx
