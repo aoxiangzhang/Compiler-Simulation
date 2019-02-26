@@ -48,10 +48,10 @@ export default {
 
     switch (this.randomNum(0, 1)) {
       case 0:
-        document.getElementById('p').style.backgroundImage = "url('./static/img/login.jpg')"
+        document.getElementById('p').style.backgroundImage = "url('/static/img/login.jpg')"
         break
       case 1:
-        document.getElementById('p').style.backgroundImage = "url('./static/img/main.jpg')"
+        document.getElementById('p').style.backgroundImage = "url('/static/img/main.jpg')"
         break
       // case 2:
       //   document.getElementById('p').style.backgroundImage = "url('/static/img/city.jpg')"
@@ -107,7 +107,7 @@ export default {
   width: 100%;
   z-index: -5;
   margin-top: -7rem;
-  background-image: url('./static/img/main.jpg');
+  background-image: url('/static/img/main.jpg');
   background-size: cover;
 }
 .ms-doc {
